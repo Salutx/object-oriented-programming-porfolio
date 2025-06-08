@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.object_oriented_case.portfolio.dto.ModelCreateRequest;
 import com.object_oriented_case.portfolio.dto.ModelUpdateRequest;
 import com.object_oriented_case.portfolio.model.Mark;
 import com.object_oriented_case.portfolio.model.Model;
@@ -29,8 +30,14 @@ public class ModelService {
                 .orElseThrow(() -> new RuntimeException("Model not found with id: " + id));
     }
 
-    public Model createModel(Model model) {
-        return modelRepository.save(model);
+    public Model createModel(ModelCreateRequest model) {
+        Model newModel = new Model();
+        newModel.setName(model.getName());
+
+        Mark mark = markService.getMarkById(model.getMarkId());
+        newModel.setMark(mark);
+
+        return modelRepository.save(newModel);
     }
 
     public Model updateModel(Long id, ModelUpdateRequest modelDetails) {

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.object_oriented_case.portfolio.dto.ModelCreateRequest;
 import com.object_oriented_case.portfolio.dto.ModelUpdateRequest;
 import com.object_oriented_case.portfolio.model.Model;
 import com.object_oriented_case.portfolio.service.ModelService;
@@ -55,7 +56,7 @@ public class ModelController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Model> createModel(@RequestBody Model model) {
+    public ResponseEntity<Model> createModel(@RequestBody ModelCreateRequest model) {
         Model createdModel = modelService.createModel(model);
         return ResponseEntity.ok(createdModel);
     }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.object_oriented_case.portfolio.dto.MarkCreateRequest;
 import com.object_oriented_case.portfolio.dto.MarkUpdateRequest;
 import com.object_oriented_case.portfolio.model.Mark;
 import com.object_oriented_case.portfolio.repository.MarkRepository;
@@ -26,8 +27,12 @@ public class MarkService {
                 .orElseThrow(() -> new RuntimeException("Mark not found with id: " + id));
     }
 
-    public Mark createMark(Mark mark) {
-        return markRepository.save(mark);
+    public Mark createMark(MarkCreateRequest mark) {
+
+        Mark newMark = new Mark();
+        newMark.setName(mark.getName());
+
+        return markRepository.save(newMark);
     }
 
     public Mark updateMark(Long id, MarkUpdateRequest markDetails) {

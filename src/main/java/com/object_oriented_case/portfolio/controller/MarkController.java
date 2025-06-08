@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.object_oriented_case.portfolio.dto.MarkCreateRequest;
 import com.object_oriented_case.portfolio.dto.MarkUpdateRequest;
 import com.object_oriented_case.portfolio.model.Mark;
 import com.object_oriented_case.portfolio.service.MarkService;
@@ -44,7 +45,7 @@ public class MarkController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Mark> createMark(@RequestBody Mark mark) {
+    public ResponseEntity<Mark> createMark(@RequestBody MarkCreateRequest mark) {
         Mark createdMark = markService.createMark(mark);
         return ResponseEntity.ok(createdMark);
     }

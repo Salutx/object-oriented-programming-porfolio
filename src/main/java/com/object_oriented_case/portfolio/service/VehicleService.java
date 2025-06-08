@@ -4,13 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.object_oriented_case.portfolio.dto.VehicleSearchRequest;
+import com.object_oriented_case.portfolio.dto.VehicleCreateRequest;
 import com.object_oriented_case.portfolio.dto.VehicleUpdateRequest;
 import com.object_oriented_case.portfolio.model.Mark;
 import com.object_oriented_case.portfolio.model.Model;
 import com.object_oriented_case.portfolio.model.Vehicle;
 import com.object_oriented_case.portfolio.repository.VehicleRepository;
-import com.object_oriented_case.portfolio.specification.VehicleSpecification;
 
 @Service
 public class VehicleService {
@@ -25,8 +24,13 @@ public class VehicleService {
         this.modelService = modelService;
     }
 
-    public List<Vehicle> getAllVehicles() {
-        return vehicleRepository.findAll();
+    public List<Vehicle> getAllVehicles(String search) {
+        if (search == null || search.isEmpty()) {
+            return vehicleRepository.findAll();
+        } else {
+            return vehicleRepository.searchByAllFields(search);
+        }
+
     }
 
     public Vehicle getVehicleById(Long id) {
@@ -34,8 +38,22 @@ public class VehicleService {
                 .orElseThrow(() -> new RuntimeException("Vehicle not found with id: " + id));
     }
 
-    public Vehicle createVehicle(Vehicle vehicle) {
-        return vehicleRepository.save(vehicle);
+    public Vehicle createVehicle(VehicleCreateRequest vehicle) {
+        Vehicle newVehicle = new Vehicle();
+
+        newVehicle.setYear(vehicle.getYear());
+        newVehicle.setColor(vehicle.getColor());
+        newVehicle.setPrice(vehicle.getPrice());
+        newVehicle.setMileage(vehicle.getMileage());
+        newVehicle.setStatus(Vehicle.VehicleStatus.valueOf(vehicle.getStatus().name().toUpperCase()));
+
+        Model model = modelService.getModelById(vehicle.getModelId());
+        Mark mark = markService.getMarkById(vehicle.getMarkId());
+
+        newVehicle.setModel(model);
+        newVehicle.setMark(mark);
+
+        return vehicleRepository.save(newVehicle);
     }
 
     public Vehicle updateVehicle(Long id, VehicleUpdateRequest vehicleDetails) {
@@ -59,9 +77,4 @@ public class VehicleService {
         vehicleRepository.delete(vehicle);
         return true;
     }
-
-    public List<Vehicle> searchVehicles(VehicleSearchRequest request) {
-        return vehicleRepository.findAll(VehicleSpecification.search(request));
-    }
-
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.object_oriented_case.portfolio.dto.VehicleSearchRequest;
+import com.object_oriented_case.portfolio.dto.VehicleCreateRequest;
 import com.object_oriented_case.portfolio.dto.VehicleUpdateRequest;
 import com.object_oriented_case.portfolio.model.Vehicle;
 import com.object_oriented_case.portfolio.service.VehicleService;
@@ -28,8 +28,10 @@ public class VehicleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Vehicle>> getAllVehicles() {
-        List<Vehicle> vehicles = vehicleService.getAllVehicles();
+    public ResponseEntity<List<Vehicle>> getAllVehicles(@RequestParam(required = false) String search) {
+        List<Vehicle> vehicles = vehicleService.getAllVehicles(search);
+        System.out.println("Search " + search);
+
         return ResponseEntity.ok(vehicles);
     }
 
@@ -57,7 +59,7 @@ public class VehicleController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Vehicle> createVehicle(@RequestBody Vehicle vehicle) {
+    public ResponseEntity<Vehicle> createVehicle(@RequestBody VehicleCreateRequest vehicle) {
         Vehicle createdVehicle = vehicleService.createVehicle(vehicle);
 
         if (createdVehicle == null) {
@@ -76,11 +78,6 @@ public class VehicleController {
         }
 
         return ResponseEntity.ok(isDeleted);
-    }
-
-    @PostMapping("/search")
-    public List<Vehicle> searchVehicles(@RequestBody VehicleSearchRequest request) {
-        return vehicleService.searchVehicles(request);
     }
 
 }
