@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.object_oriented_case.portfolio.dto.MarkCreateRequest;
@@ -34,7 +34,7 @@ public class MarkController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Mark> getMarkById(@RequestParam Long id) {
+    public ResponseEntity<Mark> getMarkById(@PathVariable Long id) {
         Mark mark = markService.getMarkById(id);
 
         if (mark == null) {
@@ -51,7 +51,7 @@ public class MarkController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Mark> updateMark(@RequestParam Long id, @RequestBody MarkUpdateRequest markDetails) {
+    public ResponseEntity<Mark> updateMark(@PathVariable Long id, @RequestBody MarkUpdateRequest markDetails) {
         Mark updatedMark = markService.updateMark(id, markDetails);
 
         if (updatedMark == null) {
@@ -62,7 +62,7 @@ public class MarkController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> deleteMark(@RequestParam Long id) {
+    public ResponseEntity<Boolean> deleteMark(@PathVariable Long id) {
         boolean isDeleted = markService.deleteMark(id);
 
         if (!isDeleted) {

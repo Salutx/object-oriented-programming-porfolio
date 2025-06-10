@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,7 +37,7 @@ public class VehicleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Vehicle> getVehicleById(@RequestParam Long id) {
+    public ResponseEntity<Vehicle> getVehicleById(@PathVariable Long id) {
         Vehicle vehicle = vehicleService.getVehicleById(id);
 
         if (vehicle == null) {
@@ -47,7 +48,7 @@ public class VehicleController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Vehicle> updateVehicle(@RequestParam Long id,
+    public ResponseEntity<Vehicle> updateVehicle(@PathVariable Long id,
             @RequestBody VehicleUpdateRequest vehicleDetails) {
         Vehicle updatedVehicle = vehicleService.updateVehicle(id, vehicleDetails);
 
@@ -70,7 +71,7 @@ public class VehicleController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> deleteVehicle(@RequestParam Long id) {
+    public ResponseEntity<Boolean> deleteVehicle(@PathVariable Long id) {
         boolean isDeleted = vehicleService.deleteVehicle(id);
 
         if (!isDeleted) {
